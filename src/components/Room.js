@@ -8,10 +8,12 @@ const Room = ({ roomName, token, handleLogout }) => {
 
   useEffect(() => {
     const participantConnected = participant => {
+      console.log(`A remote Participant connected: ${participant}`);
       setParticipants(prevParticipants => [...prevParticipants, participant]);
     };
 
     const participantDisconnected = participant => {
+      console.log(`A remote Participant has disconnected: ${participant}`);
       setParticipants(prevParticipants =>
         prevParticipants.filter(p => p !== participant)
       );
@@ -21,9 +23,12 @@ const Room = ({ roomName, token, handleLogout }) => {
       name: roomName
     }).then(room => {
       setRoom(room);
+      console.log(`Successfully joined a Room: ${room}`);
       room.on('participantConnected', participantConnected);
       room.on('participantDisconnected', participantDisconnected);
       room.participants.forEach(participantConnected);
+    }, error => {
+      console.error(`Unable to connect to Room: ${error.message}`);
     });
 
     return () => {
@@ -50,14 +55,13 @@ const Room = ({ roomName, token, handleLogout }) => {
       <h2>Room: {roomName}</h2>
       <button onClick={handleLogout}>Log out</button>
       <div className="local-participant">
-        {room ? (
+        {room && (
           <Participant
             key={room.localParticipant.sid}
             participant={room.localParticipant}
           />
-        ) : (
-          ''
-        )}
+          )
+        }
       </div>
       <h3>Remote Participants</h3>
       <div className="remote-participants">{remoteParticipants}</div>

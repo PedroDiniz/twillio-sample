@@ -1,25 +1,16 @@
 import React from 'react';
 import './App.css';
-import VideoChat from './VideoChat';
+import VideoChat from './pages/VideoChat';
 
 const App = () => {
   return (
-    <div className="app">
+    <div style={{background: "#44475a"}} className="app">
       <header>
-        <h1>Video Chat with Hooks</h1>
+        <h1>Twilio</h1>
       </header>
-      <main>
+      <main style={{background: "#44475a"}}>
         <VideoChat />
       </main>
-      <footer>
-        <p>
-          Made with{' '}
-          <span role="img" aria-label="React">
-            ⚛️
-          </span>{' '}
-          by <a href="https://twitter.com/philnash">philnash</a>
-        </p>
-      </footer>
     </div>
   );
 };

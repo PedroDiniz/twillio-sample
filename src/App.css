@@ -10,12 +10,12 @@ html {
 
 body {
   font-family: Helvetica, Arial, sans-serif;
-  color: #333e5a;
+  color: #fff;
   min-height: 100%;
 }
 
 header {
-  background: #f0293e;
+  background: #6272a4;
   color: #fff;
   text-align: center;
   flex-grow: 0;
@@ -71,7 +71,7 @@ form > div > input {
 }
 
 button {
-  background: #333e5a;
+  background: #6272a4;
   color: #fff;
   font-size: 16px;
   padding: 0.4em;
@@ -107,7 +107,7 @@ button:hover {
   padding: 0 2em 2em;
 }
 .participant {
-  background: #333e5a;
+  background: #6272a4;
   padding: 10px;
   border-radius: 6px;
   display: inline-block;
@@ -128,16 +128,4 @@ video {
   display: block;
   margin: 0 auto;
   border-radius: 6px;
-}
-
-footer {
-  background: #333e5a;
-  color: #fff;
-  text-align: center;
-  flex-grow: 0;
-  padding: 1em 0;
-}
-
-footer a {
-  color: #fff;
 }
