@@ -24,7 +24,7 @@ const VideoChat = () => {
       }
     })
         .then((res) => res.json())
-        .then(res => {setRoomName(res.uniqueName); setUsername("sejão berrantero")})
+        .then(res => {setRoomName(res.uniqueName); setUsername("serjão berrantero")})
         .catch(err => console.log(err));
   }
 

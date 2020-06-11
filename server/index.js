@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const pino = require('express-pino-logger')();
 const { videoToken } = require('./tokens');
 const Twilio = require('twilio');
+const {v4: uuidv4} = require('uuid');
 
 const apiKeySid = process.env.TWILIO_API_KEY;
 const apiKeySecret = process.env.TWILIO_API_SECRET;
@@ -45,32 +46,55 @@ app.post('/video/token', (req, res) => {
   sendTokenResponse(token, res);
 });
 
-app.get('/listUsersInRoom', (req, res) => {
-  const room = req.query.room;
-  const participants = [];
-  return client.video.rooms(room).participants
-      .each({status: 'connected'},  async (participant) => {
-        participants.push(participant.sid);
-        res.setHeader('Content-Type', 'application/json');
-        return await res.send(participants)
-      });
-});
+const getRoom = async (rooms) => {
+    const roomUniqueName = rooms.uniqueName
+    const roomSid = rooms.sid
+    return await client.video.rooms(roomSid).participants
+        .list({status: 'connected'}, (error, participants) => {
+            if (participants.length < 3) {
+                return roomUniqueName
+            }
+            createRoom().then((response)=>{
+                return(response)
+            });
+        });
+}
 
-app.get('/getMeARoom', (req, res) => {
-    const uniqueName = 'SmallDailyStandup338zzz44aokkkosdd5r0o';
-    res.setHeader('Content-Type', 'application/json');
-    return client.video.rooms
+const createRoom = async () => {
+    const uid = uuidv4();
+    return await client.video.rooms
         .create({
             recordParticipantsOnConnect: true,
             type: 'group-small',
-            uniqueName
+            uniqueName: uid
         })
-        .then(() => {
-            res.send({uniqueName});}
-            )
+        .then((room) => {
+                return {uniqueName: room.uniqueName, sid: room.sid}
+            }
+        )
         .catch(console.log)
+}
+
+// Main method
+app.get('/getMeARoom', (req, res) => {
+    return client.video.rooms.list({status: "in-progress",})
+        .then(rooms => {
+                const availableRoom = rooms.find(({sid, uniqueName}) => getRoom({sid, uniqueName}));
+                if (availableRoom) {
+                    console.log(availableRoom);
+                    res.send({uniqueName: availableRoom.uniqueName, sid: availableRoom.sid})
+                }
+            }
+        );
 });
 
+app.get('/killRoom', (req, res) => {
+    const sid = req.query.sid;
+    return client.video.rooms(sid)
+        .update({status: 'completed'})
+        .then(room => res.send(room.uniqueName));
+})
+
 app.listen(3001, () =>
-  console.log('Express server is running on localhost:3001')
+    console.log('Express server is running on localhost:3001')
 );
