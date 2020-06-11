@@ -15,6 +15,19 @@ const VideoChat = () => {
     setRoomName(event.target.value);
   }, []);
 
+  const getMeARoom = () =>{
+    console.log('click');
+    return fetch('/getMeARoom', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+        .then((res) => res.json())
+        .then(res => {setRoomName(res.uniqueName); setUsername("sejão berrantero")})
+        .catch(err => console.log(err));
+  }
+
   const handleSubmit = useCallback(
     async event => {
       event.preventDefault();
@@ -50,6 +63,7 @@ const VideoChat = () => {
         handleUsernameChange={handleUsernameChange}
         handleRoomNameChange={handleRoomNameChange}
         handleSubmit={handleSubmit}
+        getMeARoom={getMeARoom}
       />
     );
   }

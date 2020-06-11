@@ -1,11 +1,14 @@
 import React from 'react';
 
+
+
 const Lobby = ({
   username,
   handleUsernameChange,
   roomName,
   handleRoomNameChange,
-  handleSubmit
+  handleSubmit,
+                   getMeARoom
 }) => {
   return (
     <form onSubmit={handleSubmit}>
@@ -33,6 +36,7 @@ const Lobby = ({
       </div>
 
       <button type="submit">Submit</button>
+        <p onClick={() => getMeARoom()}>Get me a room</p>
     </form>
   );
 };

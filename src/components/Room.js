@@ -6,6 +6,18 @@ const Room = ({ roomName, token, handleLogout }) => {
   const [room, setRoom] = useState(null);
   const [participants, setParticipants] = useState([]);
 
+  const showParticipants = () => {
+    return fetch(`/listUsersInRoom/?room=${roomName}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+        .then((res) => res.json())
+        .then(res => console.log(res.length))
+        .catch(err => console.log(err));
+  }
+
   useEffect(() => {
     const participantConnected = participant => {
       console.log(`A remote Participant connected: ${participant}`);
@@ -56,13 +68,14 @@ const Room = ({ roomName, token, handleLogout }) => {
       <button onClick={handleLogout}>Log out</button>
       <div className="local-participant">
         {room && (
-          <Participant
-            key={room.localParticipant.sid}
-            participant={room.localParticipant}
-          />
-          )
+            <Participant
+                key={room.localParticipant.sid}
+                participant={room.localParticipant}
+            />
+        )
         }
       </div>
+      <div><p onClick={() => showParticipants()}>participants</p></div>
       <h3>Remote Participants</h3>
       <div className="remote-participants">{remoteParticipants}</div>
     </div>
