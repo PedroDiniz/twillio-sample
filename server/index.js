@@ -55,7 +55,7 @@ const getRoom = async (rooms) => {
                 return roomUniqueName
             }
             createRoom().then((response)=>{
-                return(response)
+                return response
             });
         });
 }
@@ -81,7 +81,6 @@ app.get('/getMeARoom', (req, res) => {
         .then(rooms => {
                 const availableRoom = rooms.find(({sid, uniqueName}) => getRoom({sid, uniqueName}));
                 if (availableRoom) {
-                    console.log(availableRoom);
                     res.send({uniqueName: availableRoom.uniqueName, sid: availableRoom.sid})
                 }
             }
