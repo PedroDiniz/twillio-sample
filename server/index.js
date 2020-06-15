@@ -37,8 +37,8 @@ app.get('/video/token', (req, res) => {
   const room = req.query.room;
   const token = videoToken(identity, room, config);
   sendTokenResponse(token, res);
-
 });
+
 app.post('/video/token', (req, res) => {
   const identity = req.body.identity;
   const room = req.body.room;
@@ -54,9 +54,6 @@ const getRoom = async (rooms) => {
             if (participants.length < 3) {
                 return roomUniqueName
             }
-            createRoom().then((response)=>{
-                return response
-            });
         });
 }
 
@@ -83,6 +80,9 @@ app.get('/getMeARoom', (req, res) => {
                 if (availableRoom) {
                     res.send({uniqueName: availableRoom.uniqueName, sid: availableRoom.sid})
                 }
+            createRoom().then((response)=>{
+                res.send(response);
+            });
             }
         );
 });
