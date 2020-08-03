@@ -1,6 +1,4 @@
-import React from 'react';
-
-
+import React from "react";
 
 const Lobby = ({
   username,
@@ -8,7 +6,7 @@ const Lobby = ({
   roomName,
   handleRoomNameChange,
   handleSubmit,
-                   getMeARoom
+  getMeARoom,
 }) => {
   return (
     <form onSubmit={handleSubmit}>
@@ -36,7 +34,7 @@ const Lobby = ({
       </div>
 
       <button type="submit">Submit</button>
-        <p onClick={() => getMeARoom()}>Get me a room</p>
+      <p onClick={() => getMeARoom()}>Get me a room</p>
     </form>
   );
 };

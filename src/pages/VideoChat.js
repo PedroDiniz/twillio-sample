@@ -1,52 +1,55 @@
-import React, { useState, useCallback } from 'react';
-import Lobby from '../components/Lobby';
-import Room from '../components/Room';
+import React, { useState, useCallback } from "react";
+import Lobby from "../components/Lobby";
+import Room from "../components/Room";
 
 const VideoChat = () => {
-  const [username, setUsername] = useState('');
-  const [roomName, setRoomName] = useState('');
+  const [username, setUsername] = useState("");
+  const [roomName, setRoomName] = useState("");
   const [token, setToken] = useState(null);
 
-  const handleUsernameChange = useCallback(event => {
+  const handleUsernameChange = useCallback((event) => {
     setUsername(event.target.value);
   }, []);
 
-  const handleRoomNameChange = useCallback(event => {
+  const handleRoomNameChange = useCallback((event) => {
     setRoomName(event.target.value);
   }, []);
 
-  const getMeARoom = () =>{
-    console.log('click');
-    return fetch('/getMeARoom', {
-      method: 'GET',
+  const getMeARoom = () => {
+    console.log("click");
+    return fetch("/getMeARoom", {
+      method: "GET",
       headers: {
-        'Content-Type': 'application/json'
-      }
+        "Content-Type": "application/json",
+      },
     })
-        .then((res) => res.json())
-        .then(res => {setRoomName(res.uniqueName); setUsername("serjão berrantero")})
-        .catch(err => console.log(err));
-  }
+      .then((res) => res.json())
+      .then((res) => {
+        setRoomName(res.uniqueName);
+        setUsername("serjão berrantero");
+      })
+      .catch((err) => console.log(err));
+  };
 
   const handleSubmit = useCallback(
-    async event => {
+    async (event) => {
       event.preventDefault();
-      const data = await fetch('/video/token', {
-        method: 'POST',
+      const data = await fetch("/video/token", {
+        method: "POST",
         body: JSON.stringify({
           identity: username,
-          room: roomName
+          room: roomName,
         }),
         headers: {
-          'Content-Type': 'application/json'
-        }
-      }).then(res => res.json());
+          "Content-Type": "application/json",
+        },
+      }).then((res) => res.json());
       setToken(data.token);
     },
     [roomName, username]
   );
 
-  const handleLogout = useCallback(event => {
+  const handleLogout = useCallback((event) => {
     setToken(null);
   }, []);
 
